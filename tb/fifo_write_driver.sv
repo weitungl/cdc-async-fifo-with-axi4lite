@@ -36,41 +36,35 @@ class fifo_write_driver #(parameter DATA_WIDTH = 32);
                 vif.s_axi_wdata     <= tr.data;
                 vif.s_axi_wvalid    <= 1'b1;
                 vif.s_axi_awvalid   <= 1'b1;
+                @(posedge vif.wclk);
+                
                 fork
                     // AW Channel handshake
                     begin
-                        forever begin
-                            @(posedge vif.wclk); 
-                            if (vif.s_axi_awready) begin 
-                                vif.s_axi_awvalid <= 1'b0; 
-                                break;
-                            end
+                        while(!vif.s_axi_awready) begin
+                            @(posedge vif.wclk);
                         end
+                        vif.s_axi_awvalid <= 1'b0;
                     end 
                     // W Channel handshake
                     begin
-                        forever begin
-                            @(posedge vif.wclk); // wait for the clock edge
-                            if (vif.s_axi_wready) begin
-                                vif.s_axi_wvalid <= 1'b0;
-                                break;
-                            end
+                        while(!vif.s_axi_wready) begin
+                            @(posedge vif.wclk);
                         end
+                        vif.s_axi_wvalid <= 1'b0;
                     end
                 join    // Both should both set to 0
 
                 vif.s_axi_bready <= 1'b1;
-                forever begin
+                while(!vif.s_axi_bvalid) begin
                     @(posedge vif.wclk);
-                    if (vif.s_axi_bvalid) begin
-                        break;
-                    end
                 end
                 
                 if (vif.s_axi_bresp != 2'b00) begin
                     $error("[Write Driver ERROR] AXI Write Transfer Error! bresp = 2'b%b", vif.s_axi_bresp);
                 end
                 vif.s_axi_bready <= 1'b0;
+                @(posedge vif.wclk);
             end else begin
                 vif.s_axi_awvalid   <= 1'b0;
                 vif.s_axi_wvalid    <= 1'b0;
