@@ -1,0 +1,19 @@
+{
+    "DESIGN_NAME": "axi4_lite_fifo_top",
+    "VERILOG_FILES": [
+        "dir::rtl/axi4_lite_fifo_rbridge.sv",
+        "dir::rtl/axi4_lite_fifo_top.sv",
+        "dir::rtl/axi4_lite_fifo_wbridge.sv",
+        "dir::rtl/cdc_top.sv",
+        "dir::rtl/fifo.sv",
+        "dir::rtl/rptr_handler.sv",
+        "dir::rtl/sync_stages.sv",
+        "dir::rtl/wptr_handler.sv"
+    ],
+    "CLOCK_PORT": ["wclk", "rclk"],
+    "PNR_SDC_FILE": "dir::my_constraints.sdc",
+    "SIGNOFF_SDC_FILE": "dir::my_constraints.sdc",
+    "FP_CORE_UTIL": 50,
+    "GRT_REPAIR_ANTENNAS": true,
+    "DIODE_INSERTION_STRATEGY": 3
+}
