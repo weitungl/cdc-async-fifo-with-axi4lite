@@ -4,7 +4,7 @@
 
 `include "fifo_if.sv"
 `include "fifo_pkg.sv"
-//`include "fifo_assertion.sv"
+`include "fifo_assertion.sv"
 import fifo_pkg::*;
 
 module  testbench;
