@@ -16,14 +16,15 @@ module sync_STAGES #(
 
     generate
         for(i = 0; i < STAGES; i = i + 1)begin: sync_update
-            always_ff @(posedge clk, negedge reset_n) begin
-                if(!reset_n) begin
-                    sync_reg[i] <= '0;
-                end else begin
-                    if(i == 0)
-                        sync_reg[i] <= data_in;
-                    else
-                        sync_reg[i] <= sync_reg[i-1];
+            if(i == 0) begin: gen_first
+                always_ff @(posedge clk, negedge reset_n) begin
+                    if(!reset_n)    sync_reg[0] <= '0;
+                    else            sync_reg[0] <= data_in;
+                end
+            end else begin: gen_next
+                always_ff @(posedge clk, negedge reset_n) begin
+                    if(!reset_n)    sync_reg[i] <= '0;
+                    else            sync_reg[i] <= sync_reg[i-1];
                 end
             end
         end
