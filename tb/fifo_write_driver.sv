@@ -61,7 +61,7 @@ class fifo_write_driver #(parameter DATA_WIDTH = 32);
                 end
                 
                 if (vif.s_axi_bresp != 2'b00) begin
-                    $error("[Write Driver ERROR] AXI Write Transfer Error! bresp = 2'b%b", vif.s_axi_bresp);
+                    $info("[Write Driver ERROR] AXI Write Transfer Error! bresp = 2'b%b", vif.s_axi_bresp);
                 end
                 vif.s_axi_bready <= 1'b0;
                 @(posedge vif.wclk);

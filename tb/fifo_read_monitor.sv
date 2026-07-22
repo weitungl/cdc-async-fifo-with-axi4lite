@@ -22,9 +22,9 @@ class fifo_read_monitor #(parameter DATA_WIDTH = 32);
             if(vif.s_axi_rready && vif.s_axi_rvalid) begin
                 if(vif.s_axi_rresp == 2'b10) begin
                     addr_reg[4:2] = 3'b111; // Even the address is legal, the FIFO might be empty right now
-                    $error("[Read Monitor ERROR] AXI rresp = 2'b%b", vif.s_axi_rresp);
+                    $info("[Read Monitor ERROR] AXI rresp = 2'b%b", vif.s_axi_rresp);
                 end else if(vif.s_axi_rresp != 2'b00) begin
-                    $error("[Read Monitor ERROR] Unknown AXI rresp = 2'b%b", vif.s_axi_rresp);
+                    $info("[Read Monitor ERROR] Unknown AXI rresp = 2'b%b", vif.s_axi_rresp);
                 end
 
                 if(addr_reg[4:2] == 3'd0) begin

@@ -15,12 +15,12 @@ module  testbench;
 
     initial begin
         wclk = 0;
-        forever #5 wclk = ~wclk;
+        forever #6.5 wclk = ~wclk;
     end
     
     initial begin
         rclk = 0;
-        forever #7 rclk = ~rclk;
+        forever #8.3 rclk = ~rclk;
     end
     // Instantiate an interface
     fifo_if #(32) intf(wclk, rclk, wrst_n, rrst_n);
