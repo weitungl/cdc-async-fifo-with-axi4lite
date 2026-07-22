@@ -48,8 +48,14 @@ class fifo_env #(parameter DATA_WIDTH = 32);
         wait(gen.drv_done.triggered);
 
         if(test_mode == "READ_WRITE" || test_mode == "RANDOM" || test_mode == "READ_BACK") begin
+            timeout_cnt = 0;
             while(gen2wdrv.num() > 0 || gen2rdrv.num() > 0) begin
                 #10; 
+                timeout_cnt ++;
+                if(timeout_cnt > 5000) begin
+                    $display("[Read Driver Stuck] Waiting for rvalid for too long at time %0t", $time);
+                    break;
+                end
             end
             #500;
         end else if (test_mode == "WRITE_ONLY") begin
