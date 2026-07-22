@@ -12,15 +12,17 @@ module  testbench;
     logic rclk;
     logic wrst_n;
     logic rrst_n;
+    real WCLK_PERIOD = 6.5;
+    real RCLK_PERIOD = 8.3;
 
     initial begin
         wclk = 0;
-        forever #8.3 wclk = ~wclk;
+        forever #(WCLK_PERIOD/2.0) wclk = ~wclk;
     end
     
     initial begin
         rclk = 0;
-        forever #6.5 rclk = ~rclk;
+        forever #(RCLK_PERIOD/2.0) rclk = ~rclk;
     end
     // Instantiate an interface
     fifo_if #(32) intf(wclk, rclk, wrst_n, rrst_n);
@@ -71,7 +73,7 @@ module  testbench;
 
         # 20;
 
-        env = new(intf,100, "READ_WRITE"); // RANDOM, WRITE_ONLY, READ_BACK, READ_WRITE
+        env = new(intf, 200, "READ_BACK"); // RANDOM, WRITE_ONLY, READ_BACK, READ_WRITE
         env.run();
         $display("Simulation Finished");
         $finish;
