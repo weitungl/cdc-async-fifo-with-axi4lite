@@ -88,10 +88,64 @@ To validate robust CDC operation under asymmetric clock frequencies, the verific
 
 ---
 
+## Repository Structure
 
+```text
+├── rtl/                            # SystemVerilog RTL Sources
+│   ├── axi4_lite_fifo_top.sv       # Top-level 
+│   ├── axi4_lite_fifo_wbridge.sv   # AXI Write Slave Bridge
+│   ├── axi4_lite_fifo_rbridge.sv   # AXI Read Slave Bridge
+│   ├── cdc_top.sv                  # Async FIFO core wrapper
+│   ├── wptr_handler.sv             # Write pointer logic
+│   ├── rptr_handler.sv             # Read pointer logic 
+│   ├── sync_stages.sv              # Parameterized N-stage DFF synchronizer
+│   └── fifo.sv                     # Dual-port RAM array
+├── tb/                             # Class-based Layered Verification Environment
+│   ├── tb_top.sv                   # Testbench top (Clock generation, DUT instantiation)
+│   ├── fifo_if.sv                  # SystemVerilog Interface connecting TB and DUT
+│   ├── fifo_pkg.sv                 # Package importing verification classes & types
+│   ├── fifo_transaction.sv         # Sequence Item 
+│   ├── fifo_generator.sv           # Random transaction generator
+│   ├── fifo_write_driver.sv        # Drives write transactions to DUT
+│   ├── fifo_read_driver.sv         # Drives read transactions 
+│   ├── fifo_write_monitor.sv       # Captures write interface activity
+│   ├── fifo_read_monitor.sv        # Captures read interface activity
+│   ├── fifo_scoreboard.sv          # Data integrity checker & FIFO model comparison
+│   ├── fifo_env.sv                 # Testbench Environment wrapper
+│   └── fifo_assertion.sv           # Concurrent SystemVerilog Assertions (SVA)
+├── Makefile                        # Simulation & compilation scripts
+├── config.json                     # OpenLane PNR configuration
+├── my_constraints.sdc              # Timing constraints file (SDC)
+└── README.md                       # Project documentation
+```
 
+## 🚀 How to Run & Reproduce
 
+To run the SystemVerilog class-based layered testbench and execute the OpenLane 2 physical design flow:
 
+### 1. Functional Verification (Simulation)
+```bash
+# Run simulation using Makefile from the root directory
+make run
 
+# Enter the OpenLane 2 environment
+cd openlane2
+nix develop
 
+# Navigate back to your project directory (where config.json is located)
+cd /path/to/your/project
+
+# Run OpenLane 2 flow using your config
+openlane config.json
+```
+
+## Reference & Acknowledgments
+* SkyWater 130nm PDK: Google & SkyWater Technology Open Source PDK 
+
+* OpenLane 2 EDA Infrastructure: An open-source automated RTL-to-GDSII flow powered by OpenROAD 
+
+* ARM AXI4-Lite Protocol Specification: ARM AMBA AXI and ACE Protocol Specification (IHI0022E)
+
+## Author
+Wei-Tung Lai
 
