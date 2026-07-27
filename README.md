@@ -84,10 +84,7 @@ To validate robust CDC operation under asymmetric clock frequencies, the verific
 
 #### 2. How Correctness Is Guaranteed
 * **Scoreboard Data Integrity (`fifo_scoreboard.sv`)**: Independent write/read monitors capture transactions on the fly and feed them to an in-order Golden Reference Queue. **Zero data mismatches and zero transaction drops** confirm 100% functional correctness across all 4 modes.
-* **Protocol & Boundary SVA (`fifo_assertion.sv`)**: SystemVerilog Assertions continuously check AXI4-Lite handshakes and internal FIFO boundaries in real time, guaranteeing:
-  * No write operation succeeds when `full = 1`.
-  * No read pointer advances when `empty = 1`.
-  * Clean reset initialization across both clock domains.
+* **Protocol & Boundary SVA (`fifo_assertion.sv`)**: SystemVerilog Assertions continuously check AXI4-Lite handshakes and internal FIFO boundaries in real time.
 
 ---
 
