@@ -65,15 +65,29 @@ dual-port RAM array and multi-stage Gray-code synchronizers.
 
 ## Full-Chip Layout (GDSII)
 
+<img width="910" height="910" alt="截圖 2026-07-26 中午12 23 39" src="https://github.com/user-attachments/assets/c46ec640-9287-4f2c-a7cd-9f3a94cb57f8" />
+
 *Figure 2: Final OpenLane PNR Full-Chip Physical Layout (SkyWater 130nm) displaying core area, I/O pin placements, power grid, and routed networks.*
 
 ---
 
 ## Verification Environment
 
-The project implements a **SystemVerilog Class-based Testbench** to thoroughly verify cross-clock domain operations under asymmetric clock frequencies
+The project implements a **SystemVerilog Class-based Testbench** to thoroughly verify cross-clock domain operations under asymmetric clock frequencies.
+To validate robust CDC operation under asymmetric clock frequencies, the verification environment executes four core test scenarios:
 
+#### 1. Test Modes (`test_mode`)
+* **`WRITE_ONLY` Mode**: Drives continuous write transactions while keeping reads IDLE. Fills the FIFO to capacity to validate `full` flag assertions and AXI write backpressure (`s_axi_awready`).
+* **`READ_BACK` Mode**: Sequentially executes write transactions in the first half, followed by read transactions in the second half. Validates data alignment and exercises the **AXI Read Driver Retry Mechanism** to seamlessly handle CDC synchronization cycles without data loss.
+* **`READ_WRITE` Mode**: Concurrently executes simultaneous write and read requests on every cycle, stressing the dual-port RAM access and dual-clock Gray pointer synchronizers.
+* **`RANDOM` Mode**: Randomizes transaction types (`WRITE_ONLY`, `READ_ONLY`, `IDLE`) and timing delays to expose unexpected race conditions or edge-case boundary errors.
 
+#### 2. How Correctness Is Guaranteed
+* **Scoreboard Data Integrity (`fifo_scoreboard.sv`)**: Independent write/read monitors capture transactions on the fly and feed them to an in-order Golden Reference Queue. **Zero data mismatches and zero transaction drops** confirm 100% functional correctness across all 4 modes.
+* **Protocol & Boundary SVA (`fifo_assertion.sv`)**: SystemVerilog Assertions continuously check AXI4-Lite handshakes and internal FIFO boundaries in real time, guaranteeing:
+  * No write operation succeeds when `full = 1`.
+  * No read pointer advances when `empty = 1`.
+  * Clean reset initialization across both clock domains.
 
 ---
 
