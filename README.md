@@ -22,7 +22,7 @@ dual-port RAM array and multi-stage Gray-code synchronizers.
   * **`sync_stages`**: Multi-stage (default 2-Stage) DFF synchronizers to mitigate metastability across asymmetric clock boundaries.
   * **`fifo`**: Dual-port storage array accepting independent read and write addresses.
 
-## KeyDesign Choices & Hardware Optimizations
+## Key Design Choices & Hardware Optimizations
 ### 1. Robust CDC Handshake & Driver Retry
 * **Gray-Code Pointer Sync**: Prevents multi-bit skew hazards when crossing clock domain boundaries.
 * **Driver Retry Mechanism**: Under asymmetric frequencies, pointer synchronization latency (2 clock cycles) can trigger premature `SLVERR` responses. The testbench incorporates an AXI Read Driver retry mechanism that re-issues transactions until receiving `OKAY` in the testbench read-back mode, guaranteeing 100% data readback alignment with zero scoreboard errors.
@@ -127,7 +127,9 @@ To run the SystemVerilog class-based layered testbench and execute the OpenLane 
 ```bash
 # Run simulation using Makefile from the root directory
 make run
-
+```
+### 2. Physical Design Flow
+``` bash
 # Enter the OpenLane 2 environment
 cd openlane2
 nix develop
