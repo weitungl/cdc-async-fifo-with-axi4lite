@@ -83,7 +83,7 @@ To validate robust CDC operation under asymmetric clock frequencies, the verific
 * **`RANDOM` Mode**: Randomizes transaction types (`WRITE_ONLY`, `READ_ONLY`, `IDLE`) and timing delays to expose unexpected race conditions or edge-case boundary errors.
 
 #### 2. How Correctness Is Guaranteed
-* **Scoreboard Data Integrity (`fifo_scoreboard.sv`)**: Independent write/read monitors capture transactions on the fly and feed them to an in-order Golden Reference Queue. **Zero data mismatches and zero transaction drops** confirm 100% functional correctness across all 4 modes.
+* **Scoreboard Data Integrity (`fifo_scoreboard.sv`)**: Independent write/read monitors capture transactions on the fly and feed them to an in-order golden reference queue, verifying **zero data mismatches and zero transaction drops** across all 4 operational modes. 
 * **Protocol & Boundary SVA (`fifo_assertion.sv`)**: SystemVerilog Assertions continuously check AXI4-Lite handshakes and internal FIFO boundaries in real time.
 
 ---
